@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Imaze Resolution Downscaler</title>
+    <style>
+      button {
+        border-radius: 5px;
+        padding: 5px;
+        color: white;
+        box-shadow: 1px 3px 4px #000000;
+        border: 1px solid transparent;
+
+        background-color: rgb(99, 99, 196);
+      }
+      * {
+        text-align: center;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      }
+      canvas {
+        border: 2px solid #d3d3d3;
+      }
+      .image-viewer {
+        justify-content: center;
+        width: 70ch;
+        height: 60vh;
+        padding: 30px;
+        overflow: scroll;
+        border: 2px solid #000;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Image To Use</h3>
+    <div class="image-viewer">
+      <img id="scream" src="./thumb.png" alt="The Scream" />
+    </div>
+    <form onsubmit="" enctype="multipart/form-data">
+      <input
+        type="file"
+        name="image"
+        onchange="loadImage(event)"
+        id="fileInput"
+      />
+    </form>
+    <h3>Resized Image:</h3>
+    <canvas id="myCanvas" width="auto" height="auto">
+      Your browser does not support the HTML canvas tag.</canvas
+    >
+
+    <p>
+      <button onclick="resizeImageByScale10()">
+        DownScale Resolution (1/10)
+      </button>
+    </p>
+    <p>
+      <button onclick="resizeImageByScale20()">
+        DownScale Resolution (1/20)
+      </button>
+    </p>
+    <p><button onclick="download()">Save</button></p>
+
+    <script>
+      function resizeImage(scale) {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        var img = document.getElementById("scream");
+        img.setAttribute("crossorigin", "anonymous");
+        c.height = img.height / scale;
+        c.width = img.width / scale;
+        ctx.drawImage(img, 0, 0, img.width / scale, img.height / scale);
+        let downloadimage = c.toDataURL("image/jpeg", 1);
+        console.log(downloadimage);
+        localStorage.setItem("image", downloadimage);
+      }
+
+      function resizeImageByScale10() {
+        resizeImage(10);
+      }
+      function resizeImageByScale20() {
+        resizeImage(20);
+      }
+      function loadImage(e) {
+        let image = document.getElementById("scream");
+
+        let file = e.target.files[0];
+        console.log(file);
+        if (FileReader && file) {
+          var fr = new FileReader();
+          fr.onload = function () {
+            image.src = fr.result;
+          };
+          fr.readAsDataURL(file);
+        }
+      }
+      function download() {
+        let dataURI = localStorage.getItem("image");
+        downloadURI(dataURI, "imagesampe");
+      }
+      function downloadURI(uri, name) {
+        var link = document.createElement("a");
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        delete link;
+      }
+    </script>
+  </body>
+</html>
