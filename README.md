@@ -1,5 +1,5 @@
 # Downscale Image Resolution
-Downscale image resolution by scale 10 or 20.This project demonstrates a Web based implementation using JavaScript and HTML5 canvas.
+Downscale image resolution by scale 1/10 or 1/20.This project demonstrates a Web based implementation using JavaScript and HTML5 canvas.
 
 ## Language 
   JavaScript
